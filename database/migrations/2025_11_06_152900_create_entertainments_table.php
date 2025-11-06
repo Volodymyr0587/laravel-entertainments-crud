@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\EntertainmentStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,8 +15,9 @@ return new class extends Migration
         Schema::create('entertainments', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
+            $table->string('title_for_search')->index();
             $table->string('url')->nullable();
-            $table->enum('status', ['watched', 'watching', 'will_watch']);
+            $table->enum('status', EntertainmentStatus::values())->default(EntertainmentStatus::WillWatch->value);
             $table->timestamps();
         });
     }

@@ -5,17 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEntertainmentRequest;
 use App\Http\Requests\UpdateEntertainmentRequest;
 use App\Models\Entertainment;
+use Illuminate\Http\Request;
 
 class EntertainmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $entertainments = Entertainment::paginate(2);
+        $searchTerm = $request->query('search');
 
-        return view('entertainments.index', ['entertainments' => $entertainments]);
+        $entertainments = Entertainment::query()
+            ->search($searchTerm)
+            ->latest()
+            ->paginate(1)
+            ->withQueryString();
+
+        return view('entertainments.index', [
+            'entertainments' => $entertainments,
+            'searchTerm' => $searchTerm,
+        ]);
     }
 
     /**

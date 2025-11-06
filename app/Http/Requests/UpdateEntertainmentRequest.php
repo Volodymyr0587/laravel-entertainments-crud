@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use App\Enums\EntertainmentStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEntertainmentRequest extends FormRequest
@@ -25,7 +26,7 @@ class UpdateEntertainmentRequest extends FormRequest
         return [
             'title' => ['required', 'string', Rule::unique('entertainments', 'title')->ignore($this->entertainment), 'max:150'],
             'url' => ['nullable', 'url', 'string'],
-            'status' => ['required', 'in:watched,watching,will_watch'],
+            'status' => ['required', Rule::in(array_column(EntertainmentStatus::cases(), 'value'))],
         ];
     }
 }

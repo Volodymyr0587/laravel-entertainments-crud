@@ -39,9 +39,11 @@
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select name="status" id="status" required
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="will_watch">Will Watch</option>
-                        <option value="watching">Watching</option>
-                        <option value="watched">Watched</option>
+                        @foreach (App\Enums\EntertainmentStatus::cases() as $status)
+                            <option value="{{ $status->value }}">
+                                {{ $status->label() }}
+                            </option>
+                        @endforeach
                     </select>
                      @error('status')
                         <span class="mt-2 text-xs font-bold text-red-500">{{ $message }}</span>
