@@ -76,7 +76,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         @if($entertainment->url)
-                            <a href="{{ $entertainment->url }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">
+                            <a href="{{ $entertainment->url }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 px-3 py-0.5 border border-amber-600 rounded-full text-sm hover:bg-amber-300">
                                 Link
                             </a>
                         @else
