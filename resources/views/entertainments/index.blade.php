@@ -101,4 +101,8 @@
         </table>
     </div>
 
+    <div>
+        {{ $entertainments->links() }}
+    </div>
+
 @endsection
