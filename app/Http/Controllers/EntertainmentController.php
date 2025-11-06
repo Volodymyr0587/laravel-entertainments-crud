@@ -19,7 +19,7 @@ class EntertainmentController extends Controller
         $entertainments = Entertainment::query()
             ->search($searchTerm)
             ->latest()
-            ->paginate(1)
+            ->paginate(10)
             ->withQueryString();
 
         return view('entertainments.index', [
