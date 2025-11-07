@@ -6,10 +6,11 @@ use App\Enums\EntertainmentStatus;
 use App\Traits\HasSearchableTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Entertainment extends Model
 {
-    use HasSearchableTitle;
+    use HasSearchableTitle, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

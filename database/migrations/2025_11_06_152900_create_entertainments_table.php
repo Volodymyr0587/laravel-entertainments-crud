@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->enum('status', EntertainmentStatus::values())->default(EntertainmentStatus::WillWatch->value);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

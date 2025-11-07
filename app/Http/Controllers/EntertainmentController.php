@@ -93,6 +93,28 @@ class EntertainmentController extends Controller
     {
         $entertainment->delete();
 
-        return to_route('entertainments.index')->with('success', "$entertainment deleted successfully");
+        return to_route('entertainments.index')->with('success', "$entertainment->title deleted successfully");
+    }
+
+    public function trash()
+    {
+        $trashed = Entertainment::onlyTrashed()->paginate(10);
+
+        return view('entertainments.trash', ['trashed' => $trashed]);
+    }
+
+    public function restore(Entertainment $entertainment)
+    {
+        $entertainment->restore();
+
+        return to_route('entertainments.trash')->with('success', "$entertainment->title restored successfully");
+    }
+
+    public function forceDelete(Entertainment $entertainment)
+    {
+        $title = $entertainment->title;
+        $entertainment->forceDelete();
+
+        return to_route('entertainments.trash')->with('success', "$title permanently deleted");
     }
 }

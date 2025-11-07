@@ -10,11 +10,17 @@
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-3xl font-bold text-gray-800">Entertainments</h1>
 
-        {{-- Green "Create" button --}}
-        <a href="{{ route('entertainments.create') }}"
-           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
-            + Add New
-        </a>
+        <div class="flex items-center gap-x-2">
+            <a href="{{ route('entertainments.create') }}"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                + Add New
+            </a>
+
+            <a href="{{ route('entertainments.trash') }}"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow-md transition">
+                🗑️ View Trash
+            </a>
+        </div>
     </div>
 
     <div class="my-4">
