@@ -19,13 +19,17 @@
 
     <div class="my-4">
         {{-- Search Form --}}
-        <form action="{{ route('entertainments.index') }}" method="GET" class="flex space-x-2">
+        <form action="{{ route('entertainments.index') }}" method="GET" class="flex space-x-2 items-center">
+            {{-- Search Input --}}
             <input type="text" name="search"
-                   value="{{ $searchTerm ?? '' }}"
-                   placeholder="Search by title..."
-                   class="grow px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                value="{{ request('search') }}"
+                placeholder="Search by title..."
+                class="grow px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
 
-            <select name="status" class="px-3 py-2 border rounded-md">
+            {{-- Status Dropdown (auto-submit on change) --}}
+            <select name="status"
+                    class="px-3 py-2 border rounded-md cursor-pointer"
+                    onchange="this.form.submit()">
                 <option value="">All statuses</option>
                 @foreach (App\Enums\EntertainmentStatus::cases() as $statusOption)
                     <option value="{{ $statusOption->value }}"
@@ -35,17 +39,18 @@
                 @endforeach
             </select>
 
+            {{-- Optional submit button for mobile users or when JS disabled --}}
             <button type="submit"
                     class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
                 Filter
             </button>
 
-            {{-- Reset button (optional, but helpful) --}}
-            @if ($searchTerm || $status)
-            <a href="{{ route('entertainments.index') }}"
+            {{-- Reset Button --}}
+            @if (request('search') || request('status'))
+                <a href="{{ route('entertainments.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
-                Reset
-            </a>
+                    Reset
+                </a>
             @endif
         </form>
     </div>
