@@ -7,7 +7,7 @@
 @section('content')
 
     {{-- 1. Header: Title and "Add New" Button --}}
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex justify-between items-center mb-4">
         <h1 class="text-3xl font-bold text-gray-800">Entertainments</h1>
 
         {{-- Green "Create" button --}}
@@ -15,7 +15,9 @@
            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
             + Add New
         </a>
+    </div>
 
+    <div class="my-4">
         {{-- Search Form --}}
         <form action="{{ route('entertainments.index') }}" method="GET" class="flex space-x-2">
             <input type="text" name="search"
@@ -23,13 +25,23 @@
                    placeholder="Search by title..."
                    class="grow px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
 
+            <select name="status" class="px-3 py-2 border rounded-md">
+                <option value="">All statuses</option>
+                @foreach (App\Enums\EntertainmentStatus::cases() as $statusOption)
+                    <option value="{{ $statusOption->value }}"
+                        @selected(request('status') === $statusOption->value)>
+                        {{ $statusOption->label() }}
+                    </option>
+                @endforeach
+            </select>
+
             <button type="submit"
                     class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
-                Search
+                Filter
             </button>
 
             {{-- Reset button (optional, but helpful) --}}
-            @if ($searchTerm)
+            @if ($searchTerm || $status)
             <a href="{{ route('entertainments.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
                 Reset
@@ -71,7 +83,9 @@
                             {{ $entertainment->status === App\Enums\EntertainmentStatus::WillWatch ? 'bg-gray-100 text-gray-800' : '' }}
                             {{ $entertainment->status === App\Enums\EntertainmentStatus::Abandoned ? 'bg-black text-gray-400' : '' }}">
 
-                            {{ $entertainment->status->label() }}
+                            <a href="{{ route('entertainments.index', ['status' => $entertainment->status]) }}" >
+                                {{ $entertainment->status->label() }}
+                            </a>
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

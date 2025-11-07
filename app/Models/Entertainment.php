@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\HasSearchableTitle;
 use App\Enums\EntertainmentStatus;
+use App\Traits\HasSearchableTitle;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Entertainment extends Model
 {
@@ -32,5 +33,14 @@ class Entertainment extends Model
         return [
             'status' => EntertainmentStatus::class,
         ];
+    }
+
+    public function scopeFilterByStatus(Builder $query, ?EntertainmentStatus $status): Builder
+    {
+        if ($status) {
+            $query->where('status', $status->value);
+        }
+
+        return $query;
     }
 }

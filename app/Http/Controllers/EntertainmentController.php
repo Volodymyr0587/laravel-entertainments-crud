@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Models\Entertainment;
+use App\Enums\EntertainmentStatus;
 use App\Http\Requests\StoreEntertainmentRequest;
 use App\Http\Requests\UpdateEntertainmentRequest;
-use App\Models\Entertainment;
-use Illuminate\Http\Request;
 
 class EntertainmentController extends Controller
 {
@@ -16,8 +17,14 @@ class EntertainmentController extends Controller
     {
         $searchTerm = $request->query('search');
 
+        $status = $request->query('status')
+            ? EntertainmentStatus::tryFrom($request->query('status'))
+            : null;
+
+
         $entertainments = Entertainment::query()
             ->search($searchTerm)
+            ->filterByStatus($status)
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -25,6 +32,7 @@ class EntertainmentController extends Controller
         return view('entertainments.index', [
             'entertainments' => $entertainments,
             'searchTerm' => $searchTerm,
+            'status' => $status,
         ]);
     }
 
