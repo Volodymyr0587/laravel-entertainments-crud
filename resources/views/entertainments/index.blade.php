@@ -61,7 +61,21 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium
+                        {{ request('sort') ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500' }} uppercase tracking-wider">
+                        <a href="{{ route('entertainments.index', array_merge(request()->query(), [
+                            'sort' => request('sort') === 'asc' ? 'desc' : 'asc',
+                        ])) }}" class="flex items-center space-x-1">
+                            <span>Title</span>
+                            @if (request('sort') === 'asc')
+                                <span>▲</span>
+                            @elseif (request('sort') === 'desc')
+                                <span>▼</span>
+                            @else
+                                <span>▲▼</span>
+                            @endif
+                        </a>
+                    </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>

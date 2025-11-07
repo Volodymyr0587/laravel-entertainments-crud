@@ -21,10 +21,12 @@ class EntertainmentController extends Controller
             ? EntertainmentStatus::tryFrom($request->query('status'))
             : null;
 
+        $sortDirection = $request->query('sort', 'asc');
 
         $entertainments = Entertainment::query()
             ->search($searchTerm)
             ->filterByStatus($status)
+            ->sortByTitle($sortDirection)
             ->latest()
             ->paginate(10)
             ->withQueryString();

@@ -43,4 +43,10 @@ class Entertainment extends Model
 
         return $query;
     }
+
+     public function scopeSortByTitle(Builder $query, ?string $direction = 'asc'): Builder
+    {
+        $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+        return $query->orderBy('title', $direction);
+    }
 }
