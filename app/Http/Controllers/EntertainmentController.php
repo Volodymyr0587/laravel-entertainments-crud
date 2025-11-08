@@ -132,6 +132,7 @@ class EntertainmentController extends Controller
     {
         if (! $tagsInput) {
             $entertainment->tags()->detach();
+            $this->deleteOrphanTags();
             return;
         }
 
@@ -145,5 +146,13 @@ class EntertainmentController extends Controller
         );
 
         $entertainment->tags()->sync($tags->pluck('id')->toArray());
+    }
+
+    private function deleteOrphanTags(): void
+    {
+        // Delete tags that have no entertainment associations
+        Tag::whereDoesntHave('entertainments', function ($query) {
+            $query->whereNull('entertainment_tag.deleted_at');
+        })->delete();
     }
 }

@@ -65,11 +65,11 @@ class Entertainment extends Model
         return $query->orderBy('title', $direction);
     }
 
-    public function scopeFilterByTag($query, ?string $tag): void
+    public function scopeFilterByTag(Builder $query, $tagName)
     {
-        if ($tag) {
-            $query->whereHas('tags', fn($q): mixed => $q->where('name', $tag));
-        }
+        if (!$tagName) return $query;
+
+        return $query->whereHas('tags', fn($q) => $q->where('name', $tagName));
     }
 
     public static function countInTrash(): int

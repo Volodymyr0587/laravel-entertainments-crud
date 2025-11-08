@@ -128,7 +128,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         @foreach ($entertainment->tags as $tag)
                             <a href="{{ route('entertainments.index', ['tag' => $tag->name]) }}"
-                            class="inline-block bg-gray-200 dark:bg-zinc-700 text-sm px-2 py-1 rounded hover:bg-gray-300 dark:hover:bg-zinc-600">
+                            class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 inset-ring inset-ring-purple-700/10">
                             {{ $tag->name }}
                             </a>
                         @endforeach

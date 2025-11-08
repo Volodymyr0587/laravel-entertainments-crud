@@ -52,6 +52,17 @@
                         <span class="mt-2 text-xs font-bold text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
+
+                {{-- Tags --}}
+                <div>
+                    <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                    <input type="text" name="tags" id="tags" value="{{ old('tags', $entertainment->tags->pluck('name')->implode(', ')) }}" placeholder="Tags (comma separated)"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    @error('tags')
+                        <span class="mt-2 text-xs font-bold text-red-500">{{ $message }}</span>
+                    @enderror
+                    <span class="mt-2 text-sm">Tags (comma separated): Action, Serial Killer, Horror</span>
+                </div>
             </div>
 
             {{-- Form Buttons --}}
