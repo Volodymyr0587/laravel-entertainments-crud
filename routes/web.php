@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [EntertainmentController::class, 'index']);
 
 Route::get('entertainments/trash', [EntertainmentController::class, 'trash'])->name('entertainments.trash');
+Route::get('/entertainments/export', [EntertainmentController::class, 'export'])->name('entertainments.export');
 
 Route::resource('entertainments', EntertainmentController::class);
 

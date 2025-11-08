@@ -155,4 +155,26 @@ class EntertainmentController extends Controller
             $query->whereNull('entertainment_tag.deleted_at');
         })->delete();
     }
+
+    public function export()
+    {
+        $entertainments = Entertainment::with('tags')->get();
+
+        $content = '';
+        foreach ($entertainments as $entertainment) {
+            $content .= "ID: {$entertainment->id}" . PHP_EOL;
+            $content .= "Title: {$entertainment->title}" . PHP_EOL;
+            $content .= "URL: {$entertainment->url}" . PHP_EOL;
+            $content .= "Status: {$entertainment->status->label()}" . PHP_EOL;
+            $content .= "Tags: " . $entertainment->tags->pluck('name')->implode(', ') . PHP_EOL;
+            $content .= "Created: {$entertainment->created_at}" . PHP_EOL;
+            $content .= str_repeat('-', 50) . PHP_EOL . PHP_EOL;
+        }
+
+        $filename = 'entertainments_' . now()->format('Y-m-d_His');
+
+        return response()->streamDownload(function () use ($content) {
+            echo $content;
+        }, $filename, ['Content-Type' => 'text/plain; charset=utf-8']);
+    }
 }

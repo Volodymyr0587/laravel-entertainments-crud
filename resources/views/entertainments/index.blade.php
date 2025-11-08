@@ -29,6 +29,11 @@
 
                 <span>View Trash</span>
             </a>
+
+            <a href="{{ route('entertainments.export') }}"
+            class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                Export
+            </a>
         </div>
     </div>
 
