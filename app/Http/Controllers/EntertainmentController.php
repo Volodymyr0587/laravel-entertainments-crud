@@ -156,6 +156,7 @@ class EntertainmentController extends Controller
         })->delete();
     }
 
+    //TODO: Move "export" method to service or action class
     public function export()
     {
         $entertainments = Entertainment::with('tags')->get();
