@@ -6,6 +6,7 @@ use App\Enums\EntertainmentStatus;
 use App\Traits\HasSearchableTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Entertainment extends Model
@@ -23,6 +24,19 @@ class Entertainment extends Model
         'url',
         'status',
     ];
+
+    /**
+     * The tags that belong to the Entertainment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)
+            ->withTimestamps()
+            ->wherePivotNull('deleted_at');
+    }
+
 
     /**
      * Get the attributes that should be cast.
@@ -51,8 +65,43 @@ class Entertainment extends Model
         return $query->orderBy('title', $direction);
     }
 
+    public function scopeFilterByTag($query, ?string $tag): void
+    {
+        if ($tag) {
+            $query->whereHas('tags', fn($q): mixed => $q->where('name', $tag));
+        }
+    }
+
     public static function countInTrash(): int
     {
         return self::onlyTrashed()->count();
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($entertainment) {
+            if (! $entertainment->isForceDeleting()) {
+                // Soft delete the pivot records instead of fully detaching
+                $entertainment->tags()->updateExistingPivot(
+                    $entertainment->tags()->pluck('tags.id')->toArray(),
+                    ['deleted_at' => now()]
+                );
+            }
+        });
+
+        static::restored(function ($entertainment) {
+            // Restore soft-deleted pivot records
+            \DB::table('entertainment_tag')
+                ->where('entertainment_id', $entertainment->id)
+                ->update(['deleted_at' => null]);
+        });
+
+        static::forceDeleted(function ($entertainment) {
+            // Hard delete all related pivot records
+            \DB::table('entertainment_tag')->where('entertainment_id', $entertainment->id)->delete();
+
+            // Remove orphan tags
+            Tag::whereDoesntHave('entertainments')->delete();
+        });
     }
 }

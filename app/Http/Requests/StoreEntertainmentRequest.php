@@ -27,6 +27,7 @@ class StoreEntertainmentRequest extends FormRequest
             'title' => ['required', 'string', 'unique:entertainments,title', 'max:150'],
             'url' => ['nullable', 'url', 'string'],
             'status' => ['required', Rule::in(array_column(EntertainmentStatus::cases(), 'value'))],
+            'tags' => ['nullable', 'string'],
         ];
     }
 }

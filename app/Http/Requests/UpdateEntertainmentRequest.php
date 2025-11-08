@@ -27,6 +27,7 @@ class UpdateEntertainmentRequest extends FormRequest
             'title' => ['required', 'string', Rule::unique('entertainments', 'title')->ignore($this->entertainment), 'max:150'],
             'url' => ['nullable', 'url', 'string'],
             'status' => ['required', Rule::in(array_column(EntertainmentStatus::cases(), 'value'))],
+            'tags' => ['nullable', 'string'],
         ];
     }
 }

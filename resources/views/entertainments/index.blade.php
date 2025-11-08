@@ -63,7 +63,7 @@
             </button>
 
             {{-- Reset Button --}}
-            @if (request('search') || request('status'))
+            @if (request('search') || request('status') || request('tag'))
                 <a href="{{ route('entertainments.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
                     Reset
@@ -99,6 +99,7 @@
                         </a>
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tags</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -123,6 +124,14 @@
                                 {{ $entertainment->status->label() }}
                             </a>
                         </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @foreach ($entertainment->tags as $tag)
+                            <a href="{{ route('entertainments.index', ['tag' => $tag->name]) }}"
+                            class="inline-block bg-gray-200 dark:bg-zinc-700 text-sm px-2 py-1 rounded hover:bg-gray-300 dark:hover:bg-zinc-600">
+                            {{ $tag->name }}
+                            </a>
+                        @endforeach
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         @if($entertainment->url)

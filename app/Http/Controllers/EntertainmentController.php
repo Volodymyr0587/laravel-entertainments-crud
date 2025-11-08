@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Models\Entertainment;
 use App\Enums\EntertainmentStatus;
@@ -23,9 +24,12 @@ class EntertainmentController extends Controller
 
         $sortDirection = $request->query('sort', 'asc');
 
+        $tag = $request->query('tag');
+
         $entertainments = Entertainment::query()
             ->search($searchTerm)
             ->filterByStatus($status)
+            ->filterByTag($tag)
             ->sortByTitle($sortDirection)
             ->latest()
             ->paginate(10)
@@ -35,6 +39,7 @@ class EntertainmentController extends Controller
             'entertainments' => $entertainments,
             'searchTerm' => $searchTerm,
             'status' => $status,
+            'tag' => $tag,
             'countInTrash' => Entertainment::countInTrash(),
         ]);
     }
@@ -55,6 +60,8 @@ class EntertainmentController extends Controller
         $data = $request->validated();
 
         $entertainment = Entertainment::create($data);
+
+        $this->syncTags($entertainment, $data['tags'] ?? null);
 
         return to_route('entertainments.index')->with('success', "$entertainment->title created successfully");
     }
@@ -83,6 +90,8 @@ class EntertainmentController extends Controller
         $data = $request->validated();
 
         $entertainment->update($data);
+
+        $this->syncTags($entertainment, $data['tags'] ?? null);
 
         return to_route('entertainments.index')->with('success', "$entertainment->title updated successfully");
     }
@@ -117,5 +126,24 @@ class EntertainmentController extends Controller
         $entertainment->forceDelete();
 
         return to_route('entertainments.trash')->with('success', "$title permanently deleted");
+    }
+
+    private function syncTags(Entertainment $entertainment, ?string $tagsInput): void
+    {
+        if (! $tagsInput) {
+            $entertainment->tags()->detach();
+            return;
+        }
+
+        $tagNames = collect(explode(',', $tagsInput))
+            ->map(fn ($tag) => trim(strip_tags($tag)))
+            ->filter() // remove empty strings
+            ->unique();
+
+        $tags = $tagNames->map(fn ($name) =>
+            Tag::firstOrCreate(['name' => $name])
+        );
+
+        $entertainment->tags()->sync($tags->pluck('id')->toArray());
     }
 }
