@@ -35,6 +35,7 @@ class EntertainmentController extends Controller
             'entertainments' => $entertainments,
             'searchTerm' => $searchTerm,
             'status' => $status,
+            'countInTrash' => Entertainment::countInTrash(),
         ]);
     }
 

@@ -50,4 +50,9 @@ class Entertainment extends Model
         $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
         return $query->orderBy('title', $direction);
     }
+
+    public static function countInTrash(): int
+    {
+        return self::onlyTrashed()->count();
+    }
 }
