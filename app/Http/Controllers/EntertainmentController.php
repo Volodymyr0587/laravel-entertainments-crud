@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Services\EntertainmentExportService;
 use Illuminate\Http\Request;
 use App\Models\Entertainment;
 use App\Enums\EntertainmentStatus;
@@ -11,6 +12,11 @@ use App\Http\Requests\UpdateEntertainmentRequest;
 
 class EntertainmentController extends Controller
 {
+    public function __construct(private EntertainmentExportService $exportService)
+    {
+        //
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -130,18 +136,19 @@ class EntertainmentController extends Controller
 
     private function syncTags(Entertainment $entertainment, ?string $tagsInput): void
     {
-        if (! $tagsInput) {
+        if (!$tagsInput) {
             $entertainment->tags()->detach();
             $this->deleteOrphanTags();
             return;
         }
 
         $tagNames = collect(explode(',', $tagsInput))
-            ->map(fn ($tag) => trim(strip_tags($tag)))
+            ->map(fn($tag) => trim(strip_tags($tag)))
             ->filter() // remove empty strings
             ->unique();
 
-        $tags = $tagNames->map(fn ($name) =>
+        $tags = $tagNames->map(
+            fn($name) =>
             Tag::firstOrCreate(['name' => $name])
         );
 
@@ -156,26 +163,17 @@ class EntertainmentController extends Controller
         })->delete();
     }
 
-    //TODO: Move "export" method to service or action class
-    public function export()
+    public function export(Request $request)
     {
-        $entertainments = Entertainment::with('tags')->get();
+        $content = $this->exportService->exportToText();
+        $filename = $this->exportService->generateFilename($request->get('ext', ''));
 
-        $content = '';
-        foreach ($entertainments as $entertainment) {
-            $content .= "ID: {$entertainment->id}" . PHP_EOL;
-            $content .= "Title: {$entertainment->title}" . PHP_EOL;
-            $content .= "URL: {$entertainment->url}" . PHP_EOL;
-            $content .= "Status: {$entertainment->status->label()}" . PHP_EOL;
-            $content .= "Tags: " . $entertainment->tags->pluck('name')->implode(', ') . PHP_EOL;
-            $content .= "Created: {$entertainment->created_at}" . PHP_EOL;
-            $content .= str_repeat('-', 50) . PHP_EOL . PHP_EOL;
-        }
-
-        $filename = 'entertainments_' . now()->format('Y-m-d_His');
-
-        return response()->streamDownload(function () use ($content) {
-            echo $content;
-        }, $filename, ['Content-Type' => 'text/plain; charset=utf-8']);
+        return response()->streamDownload(
+            function () use ($content) {
+                echo $content;
+            },
+            $filename,
+            ['Content-Type' => 'text/plain; charset=utf-8']
+        );
     }
 }
