@@ -12,7 +12,7 @@
     <!-- Trigger -->
     <button
         @click="open = true"
-        {{ $attributes->merge(['class' => 'inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:cursor-pointer']) }}
+        {{ $attributes->merge(['class' => 'inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:cursor-pointer transition duration-200 ease-in-out transform hover:scale-105']) }}
     >
         {{ $slot }}
     </button>
@@ -62,7 +62,7 @@
             <div class="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
                 <button
                     @click="open = false"
-                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-md hover:bg-gray-50"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-md hover:bg-gray-50 cursor-pointer"
                 >
                     Cancel
                 </button>

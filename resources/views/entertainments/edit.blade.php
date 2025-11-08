@@ -74,7 +74,7 @@
 
                 {{-- Blue "Update" button --}}
                 <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 cursor-pointer">
                     Update
                 </button>
             </div>
