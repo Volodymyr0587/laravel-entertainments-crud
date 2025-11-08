@@ -18,7 +18,7 @@
 
             <a href="{{ route('entertainments.trash') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow-md transition">
-                @if ($countInTrash > 0)
+                @if ($countInTrash)
                     <span class="text-yellow-300">🗑️</span>
                     <span class="mx-1 bg-yellow-300 text-gray-900 font-bold text-xs px-1 py-0.5 rounded-full">
                         {{ $countInTrash }}
@@ -31,6 +31,10 @@
             </a>
         </div>
     </div>
+
+    @if (session('success'))
+        <div class="my-4 text-green-600">{{ session('success') }}</div>
+    @endif
 
     <div class="my-4">
         {{-- Search Form --}}

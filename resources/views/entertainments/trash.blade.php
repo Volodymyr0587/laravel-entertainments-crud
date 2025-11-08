@@ -18,8 +18,8 @@
     </div>
 
     @if (session('success'))
-            <div class="my-4 text-green-600">{{ session('success') }}</div>
-        @endif
+        <div class="my-4 text-green-600">{{ session('success') }}</div>
+    @endif
 
 
     @if ($trashed->count())

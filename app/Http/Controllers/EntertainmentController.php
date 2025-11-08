@@ -56,7 +56,7 @@ class EntertainmentController extends Controller
 
         $entertainment = Entertainment::create($data);
 
-        return to_route('entertainments.index')->with('success', "$entertainment created successfully");
+        return to_route('entertainments.index')->with('success', "$entertainment->title created successfully");
     }
 
     /**
@@ -84,7 +84,7 @@ class EntertainmentController extends Controller
 
         $entertainment->update($data);
 
-        return to_route('entertainments.index')->with('success', "$entertainment updated successfully");
+        return to_route('entertainments.index')->with('success', "$entertainment->title updated successfully");
     }
 
     /**
