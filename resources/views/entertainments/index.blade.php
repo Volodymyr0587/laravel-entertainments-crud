@@ -152,8 +152,15 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                        @can('view', $entertainment)
                         <a href="{{ route('entertainments.show', $entertainment) }}" class="text-blue-600 hover:text-blue-900">View</a>
+                        @endcan
+
+                        @can('update', $entertainment)
                         <a href="{{ route('entertainments.edit', $entertainment) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
+                        @endcan
+
+                        @can('delete', $entertainment)
                         <form action="{{ route('entertainments.destroy', $entertainment) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
@@ -162,6 +169,7 @@
                                 Delete
                             </button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
                 @endforeach

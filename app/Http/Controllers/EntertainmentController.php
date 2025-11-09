@@ -9,6 +9,7 @@ use App\Models\Entertainment;
 use App\Enums\EntertainmentStatus;
 use App\Http\Requests\StoreEntertainmentRequest;
 use App\Http\Requests\UpdateEntertainmentRequest;
+use Illuminate\Support\Facades\Gate;
 
 class EntertainmentController extends Controller
 {
@@ -32,7 +33,7 @@ class EntertainmentController extends Controller
 
         $tag = $request->query('tag');
 
-        $entertainments = auth()->user()->entertainments()
+        $entertainments = auth()->user()->entertainments()->with('images')
             ->search($searchTerm)
             ->filterByStatus($status)
             ->filterByTag($tag)
@@ -69,6 +70,13 @@ class EntertainmentController extends Controller
 
         $this->syncTags($entertainment, $data['tags'] ?? null);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads/entertainments', 'public');
+                $entertainment->images()->create(['path' => $path]);
+            }
+        }
+
         return to_route('entertainments.index')->with('success', "$entertainment->title created successfully");
     }
 
@@ -77,6 +85,8 @@ class EntertainmentController extends Controller
      */
     public function show(Entertainment $entertainment)
     {
+        Gate::authorize('view', $entertainment);
+
         return view('entertainments.show', ['entertainment' => $entertainment]);
     }
 
@@ -85,6 +95,8 @@ class EntertainmentController extends Controller
      */
     public function edit(Entertainment $entertainment)
     {
+        Gate::authorize('update', $entertainment);
+
         return view('entertainments.edit', ['entertainment' => $entertainment]);
     }
 
@@ -93,11 +105,20 @@ class EntertainmentController extends Controller
      */
     public function update(UpdateEntertainmentRequest $request, Entertainment $entertainment)
     {
+        Gate::authorize('update', $entertainment);
+
         $data = $request->validated();
 
         $entertainment->update($data);
 
         $this->syncTags($entertainment, $data['tags'] ?? null);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads/entertainments', 'public');
+                $entertainment->images()->create(['path' => $path]);
+            }
+        }
 
         return to_route('entertainments.index')->with('success', "$entertainment->title updated successfully");
     }
@@ -107,6 +128,8 @@ class EntertainmentController extends Controller
      */
     public function destroy(Entertainment $entertainment)
     {
+        Gate::authorize('delete', $entertainment);
+
         $entertainment->delete();
 
         return to_route('entertainments.index')->with('success', "$entertainment->title deleted successfully");
@@ -121,6 +144,8 @@ class EntertainmentController extends Controller
 
     public function restore(Entertainment $entertainment)
     {
+        Gate::authorize('restore', $entertainment);
+
         $entertainment->restore();
 
         return to_route('entertainments.trash')->with('success', "$entertainment->title restored successfully");
@@ -128,7 +153,10 @@ class EntertainmentController extends Controller
 
     public function forceDelete(Entertainment $entertainment)
     {
+        Gate::authorize('forceDelete', $entertainment);
+
         $title = $entertainment->title;
+
         $entertainment->forceDelete();
 
         return to_route('entertainments.trash')->with('success', "$title permanently deleted");

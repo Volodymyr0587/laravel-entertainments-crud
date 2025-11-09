@@ -46,6 +46,35 @@
                 </div>
             @endif
 
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                @foreach($entertainment->images as $image)
+                    <div class="relative group">
+                        <img
+                            src="{{ asset('storage/' . $image->path) }}"
+                            alt="Entertainment image"
+                            class="w-full h-48 object-cover rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105"
+                        >
+                        <!-- Optional overlay buttons -->
+                        <form
+                            method="POST"
+                            action="{{ route('images.destroy', $image) }}"
+                            class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            @csrf
+                            @method('DELETE')
+                            <button
+                                type="submit"
+                                class="bg-black/60 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                                onclick="return confirm('Are you sure?')"
+                            >
+                                ✕
+                            </button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+
+
             <div class="text-sm">
                 <span class="font-medium text-gray-600">Added:</span>
                 <span class="text-gray-700">{{ $entertainment->created_at->format('M d, Y') }}</span>
@@ -64,10 +93,12 @@
             </a>
 
             {{-- Yellow "Edit" button --}}
+            @can('update', $entertainment)
             <a href="{{ route('entertainments.edit', $entertainment) }}"
                class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
                Edit
             </a>
+            @endcan
         </div>
     </div>
 @endsection

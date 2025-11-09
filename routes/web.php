@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\EntertainmentController;
 use App\Http\Controllers\Auth\RegisterUserController;
@@ -19,7 +20,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [SessionController::class, 'destroy'])->name('logout');
 
-    Route::get('/dashboard', [EntertainmentController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [EntertainmentController::class, 'index'])->name('dashboard');
     Route::get('entertainments/trash', [EntertainmentController::class, 'trash'])->name('entertainments.trash');
     Route::get('entertainments/export', [EntertainmentController::class, 'export'])->name('entertainments.export');
     Route::resource('entertainments', EntertainmentController::class);
@@ -31,4 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('entertainments/{entertainment}/force-delete', [EntertainmentController::class, 'forceDelete'])
         ->withTrashed()
         ->name('entertainments.forceDelete');
+
+    Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
+
 });

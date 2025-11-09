@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Enums\EntertainmentStatus;
+use App\Observers\EntertainmentObserver;
 use App\Traits\HasSearchableTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+#[ObservedBy([EntertainmentObserver::class])]
 class Entertainment extends Model
 {
     use HasSearchableTitle, SoftDeletes;
@@ -46,6 +50,16 @@ class Entertainment extends Model
         return $this->belongsToMany(Tag::class)
             ->withTimestamps()
             ->wherePivotNull('deleted_at');
+    }
+
+    /**
+     * Get all of the images for the Entertainment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class);
     }
 
 

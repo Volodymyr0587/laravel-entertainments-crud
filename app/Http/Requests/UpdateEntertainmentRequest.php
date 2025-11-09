@@ -28,6 +28,7 @@ class UpdateEntertainmentRequest extends FormRequest
             'url' => ['nullable', 'url', 'string'],
             'status' => ['required', Rule::in(array_column(EntertainmentStatus::cases(), 'value'))],
             'tags' => ['nullable', 'string'],
+            'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 }
