@@ -10,18 +10,24 @@
 </head>
 <body class="bg-gray-100 min-h-screen">
 
-    {{--
-      This is the main container that centers your content.
-      - `max-w-6xl`: Sets a max width
-      - `mx-auto`:  Horizontally centers the container
-      - `py-12`:   Adds padding on the top and bottom
-    --}}
-    <div class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <nav class="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-900 dark:text-white">
+        <a href="/" class="font-bold text-xl">🎬 Entertainment App</a>
 
-        {{-- This is where your page content will be injected --}}
+        <div>
+            @auth
+                <span class="mr-3">Hi, {{ auth()->user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-red-500 hover:underline">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-blue-500 hover:underline mr-3">Login</a>
+                <a href="{{ route('register') }}" class="text-blue-500 hover:underline">Register</a>
+            @endauth
+        </div>
+    </nav>
+    <main class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         @yield('content')
-
-    </div>
-
+    </main>
 </body>
 </html>
