@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\EntertainmentStatus;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('title_for_search')->index();
             $table->string('url')->nullable();
             $table->enum('status', EntertainmentStatus::values())->default(EntertainmentStatus::WillWatch->value);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

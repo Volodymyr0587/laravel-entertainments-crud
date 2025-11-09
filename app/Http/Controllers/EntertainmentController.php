@@ -32,7 +32,7 @@ class EntertainmentController extends Controller
 
         $tag = $request->query('tag');
 
-        $entertainments = Entertainment::query()
+        $entertainments = auth()->user()->entertainments()
             ->search($searchTerm)
             ->filterByStatus($status)
             ->filterByTag($tag)
@@ -65,7 +65,7 @@ class EntertainmentController extends Controller
     {
         $data = $request->validated();
 
-        $entertainment = Entertainment::create($data);
+        $entertainment = auth()->user()->entertainments()->create($data);
 
         $this->syncTags($entertainment, $data['tags'] ?? null);
 
@@ -114,7 +114,7 @@ class EntertainmentController extends Controller
 
     public function trash()
     {
-        $trashed = Entertainment::onlyTrashed()->paginate(10);
+        $trashed = auth()->user()->entertainments()->onlyTrashed()->paginate(10);
 
         return view('entertainments.trash', ['trashed' => $trashed]);
     }

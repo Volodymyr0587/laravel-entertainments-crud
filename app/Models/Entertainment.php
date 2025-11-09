@@ -6,8 +6,9 @@ use App\Enums\EntertainmentStatus;
 use App\Traits\HasSearchableTitle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Entertainment extends Model
 {
@@ -24,6 +25,16 @@ class Entertainment extends Model
         'url',
         'status',
     ];
+
+    /**
+     * Get the user that owns the Entertainment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * The tags that belong to the Entertainment

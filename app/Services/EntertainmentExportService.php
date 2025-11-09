@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Entertainment;
 use Illuminate\Support\Collection;
 
 class EntertainmentExportService
 {
     public function exportToText(?Collection $entertainments = null): string
     {
-        $entertainments = $entertainments ?? Entertainment::with('tags')->get();
+        $entertainments = $entertainments ?? auth()->user()->entertainments()->with('tags')->get();
 
         $content = '';
         foreach ($entertainments as $entertainment) {
