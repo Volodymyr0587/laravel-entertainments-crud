@@ -66,7 +66,10 @@ class EntertainmentController extends Controller
     {
         $data = $request->validated();
 
-        $entertainment = auth()->user()->entertainments()->create($data);
+        // Remove relationship keys before mass assignment
+        $entertainmentData = collect($data)->except(['tags', 'images'])->toArray();
+
+        $entertainment = auth()->user()->entertainments()->create($entertainmentData);
 
         $this->syncTags($entertainment, $data['tags'] ?? null);
 
@@ -109,7 +112,10 @@ class EntertainmentController extends Controller
 
         $data = $request->validated();
 
-        $entertainment->update($data);
+        // Remove relationship keys before mass assignment
+        $entertainmentData = collect($data)->except(['tags', 'images'])->toArray();
+
+        $entertainment->update($entertainmentData);
 
         $this->syncTags($entertainment, $data['tags'] ?? null);
 
