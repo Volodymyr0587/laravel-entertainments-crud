@@ -139,7 +139,7 @@ class EntertainmentController extends Controller
 
         $entertainment->delete();
 
-        return to_route('entertainments.index')->with('success', "$entertainment->title deleted successfully");
+        return to_route('entertainments.index')->with('warning', "$entertainment->title moved to trash successfully");
     }
 
     public function trash()
@@ -155,7 +155,7 @@ class EntertainmentController extends Controller
 
         $entertainment->restore();
 
-        return to_route('entertainments.trash')->with('success', "$entertainment->title restored successfully");
+        return to_route('entertainments.trash')->with('info', "$entertainment->title restored successfully");
     }
 
     public function forceDelete(Entertainment $entertainment)
