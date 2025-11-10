@@ -90,21 +90,7 @@
 
         </form>
 
-        {{-- <div>
-            @foreach($entertainment->images as $image)
-                <form method="POST" action="{{ route('images.destroy', $image) }}">
-                    @csrf
-                    @method('DELETE')
-                    <img src="{{ asset('storage/' . $image->path) }}" width="100">
-
-                    @can('update', $entertainment)
-                    <button type="submit">Remove</button>
-                    @endcan
-                </form>
-            @endforeach
-        </div> --}}
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8">
             @foreach($entertainment->images as $image)
                 <div class="relative group">
                     <img
