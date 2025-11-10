@@ -38,6 +38,7 @@ class EntertainmentController extends Controller
             ->filterByStatus($status)
             ->filterByTag($tag)
             ->sortByTitle($sortDirection)
+            // ->with('tags')
             ->latest()
             ->paginate(10)
             ->withQueryString();
