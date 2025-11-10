@@ -122,12 +122,12 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         {{-- Status "Badge" --}}
-                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
-                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Watched ? 'bg-green-100 text-green-800' : '' }}
-                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Watching ? 'bg-blue-100 text-blue-800' : '' }}
-                            {{ $entertainment->status === App\Enums\EntertainmentStatus::OnHold ? 'bg-yellow-100 text-yellow-800' : '' }}
-                            {{ $entertainment->status === App\Enums\EntertainmentStatus::WillWatch ? 'bg-gray-100 text-gray-800' : '' }}
-                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Abandoned ? 'bg-black text-gray-400' : '' }}">
+                        <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium inset-ring
+                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Watched ? 'bg-green-400/10 text-green-400 inset-ring-green-500/20' : '' }}
+                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Watching ? 'bg-blue-400/10 text-blue-400 inset-ring-blue-500/20' : '' }}
+                            {{ $entertainment->status === App\Enums\EntertainmentStatus::OnHold ? 'bg-yellow-400/10 text-yellow-400 inset-ring-yellow-500/20' : '' }}
+                            {{ $entertainment->status === App\Enums\EntertainmentStatus::WillWatch ? 'bg-purple-400/10 text-purple-400 inset-ring-purple-500/20' : '' }}
+                            {{ $entertainment->status === App\Enums\EntertainmentStatus::Abandoned ? 'bg-red-400/10 text-red-400 inset-ring-red-500/20' : '' }}">
 
                             <a href="{{ route('entertainments.index', ['status' => $entertainment->status]) }}" >
                                 {{ $entertainment->status->label() }}
