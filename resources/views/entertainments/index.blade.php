@@ -134,7 +134,7 @@
                             </a>
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4">
                         @foreach ($entertainment->tags as $tag)
                             <a href="{{ route('entertainments.index', ['tag' => $tag->name]) }}"
                             class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 inset-ring inset-ring-purple-700/10">
