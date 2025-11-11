@@ -69,7 +69,7 @@
             </button>
 
             {{-- Reset Button --}}
-            @if (request('search') || request('status') || request('tag'))
+            @if (request('search') || request('status') || request('tag') || request('sort'))
                 <a href="{{ route('entertainments.index') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4
                 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
