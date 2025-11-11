@@ -21,6 +21,12 @@
             @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
+        <div class="flex items-center mb-4">
+            <label for="remember">Remember Me</label>
+            <input type="checkbox" name="remember" id="remember"
+                   class="ml-2">
+        </div>
+
         <button type="submit"
                 class="w-full bg-indigo-600 text-white rounded-md py-2 font-semibold hover:bg-indigo-700">
             Login
