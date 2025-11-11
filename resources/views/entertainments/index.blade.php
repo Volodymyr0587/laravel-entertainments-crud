@@ -117,6 +117,17 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4 whitespace-nowrap max-w-sm">
                         <div class="text-sm font-medium text-gray-900 truncate">{{ $entertainment->title }}</div>
+                        <div class="py-3">
+                        @if ($entertainment->images->isNotEmpty())
+                            <img src="{{ asset('storage/' . $entertainment->images->first()->path) }}"
+                                alt="{{ $entertainment->title }}"
+                                class="w-16 h-16 object-cover rounded-lg shadow-sm">
+                        @else
+                            <div class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 rounded-lg">
+                                <x-svg.no-image />
+                            </div>
+                        @endif
+                    </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         {{-- Status "Badge" --}}
