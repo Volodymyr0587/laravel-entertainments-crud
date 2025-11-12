@@ -36,3 +36,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
 
 });
+
+Route::get('locale/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'uk'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('locale.switch');

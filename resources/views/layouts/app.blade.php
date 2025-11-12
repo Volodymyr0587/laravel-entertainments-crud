@@ -14,6 +14,7 @@
         <a href="/" class="font-bold text-xl">🎬 Entertainment App</a>
 
         <div>
+            <x-lang-switcher />
             @auth
                 <span class="mr-3">Hi, {{ auth()->user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
